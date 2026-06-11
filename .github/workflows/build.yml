@@ -1,0 +1,18 @@
+name: Build & Push Frontend Image
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login DockerHub
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PWD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USER -p $DOCKER_PWD
+      - name: Build & Push
+        run: |
+          docker build -t eloisat/234-deploylab-frontend:latest .
+          docker push eloisat/234-deploylab-frontend:latest
